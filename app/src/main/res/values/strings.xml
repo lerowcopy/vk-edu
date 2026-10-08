@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">VkEdu</string>
+    <string name="app_name">Intents</string>
+    <string name="input_hint">Текст или номер телефона</string>
+    <string name="open_second">Открыть вторую Activity</string>
+    <string name="call_friend">Позвонить другу</string>
+    <string name="share_text">Поделиться текстом</string>
+    <string name="share_title">Поделиться через…</string>
+    <string name="error_empty">Введите текст</string>
+    <string name="error_invalid_phone">Введите корректный номер: только цифры, можно с + в начале</string>
+    <string name="error_no_app">Не найдено приложение для этого действия</string>
+    <string name="error_no_data">Данные не получены</string>
 </resources>
