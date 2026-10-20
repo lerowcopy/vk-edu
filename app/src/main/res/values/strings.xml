@@ -9,4 +9,5 @@
     <string name="error_invalid_phone">Введите корректный номер: только цифры, можно с + в начале</string>
     <string name="error_no_app">Не найдено приложение для этого действия</string>
     <string name="error_no_data">Данные не получены</string>
+    <string name="app_list_title">Приложения</string>
 </resources>
