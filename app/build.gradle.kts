@@ -44,6 +44,13 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    // Навигация (NavHost / composable / navController)
+    implementation(libs.androidx.navigation.compose)
+    // viewModel() в Compose — для экрана карточки из практики
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Coil — загрузка иконок и скриншотов в карточке
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material.icons.core)
