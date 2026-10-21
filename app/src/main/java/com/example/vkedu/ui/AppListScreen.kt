@@ -2,32 +2,22 @@ package com.example.vkedu.ui
 
 import android.graphics.drawable.AdaptiveIconDrawable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -37,9 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
@@ -52,8 +42,11 @@ import com.example.vkedu.ui.theme.VkEduTheme
 @Composable
 fun AppListScreen(
     apps: List<AppInfo>,
+    onAppClick: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    StatusBarIcons(darkIcons = MaterialTheme.colorScheme.primary.luminance() > 0.5f)
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -62,7 +55,6 @@ fun AppListScreen(
                 navigationIcon = {
                     CurrentAppIcon(modifier = Modifier.padding(start = 16.dp, end = 4.dp))
                 },
-                // Акцентный цвет темы (primary) как фон тулбара
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -79,7 +71,10 @@ fun AppListScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             items(items = apps, key = { it.id }) { app ->
-                AppListItem(app)
+                AppListItem(
+                    app = app,
+                    onClick = { onAppClick(app) },
+                )
             }
         }
     }
@@ -92,8 +87,6 @@ private fun CurrentAppIcon(modifier: Modifier = Modifier) {
         runCatching { context.packageManager.getApplicationIcon(context.packageName) }.getOrNull()
     }
     val bitmap = remember(drawable) { drawable?.toBitmap()?.asImageBitmap() }
-    // Adaptive icon рисуется на холсте 108dp, а видимая часть — центральные 72dp.
-    // Увеличиваем в 1.5 раза, чтобы видимая часть заполнила круг.
     val scale = if (drawable is AdaptiveIconDrawable) 1.5f else 1f
     val size = 40.dp
 
@@ -110,7 +103,6 @@ private fun CurrentAppIcon(modifier: Modifier = Modifier) {
                 modifier = Modifier.requiredSize(size * scale),
             )
         } else {
-            // Запасной вариант (например, в Preview)
             Icon(
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
@@ -120,71 +112,13 @@ private fun CurrentAppIcon(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-private fun AppListItem(
-    app: AppInfo,
-    modifier: Modifier = Modifier,
-) {
-    Card(modifier = modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = app.icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(32.dp),
-                )
-            }
-
-            Spacer(Modifier.width(16.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = app.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = app.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(Modifier.height(8.dp))
-                CategoryLabel(app.category)
-            }
-        }
-    }
-}
-
-@Composable
-private fun CategoryLabel(category: String) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.secondaryContainer,
-    ) {
-        Text(
-            text = category,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun AppListScreenPreview() {
     VkEduTheme {
-        AppListScreen(apps = sampleApps)
+        AppListScreen(
+            apps = sampleApps,
+            onAppClick = {},
+        )
     }
 }
