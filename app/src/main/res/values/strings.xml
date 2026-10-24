@@ -10,6 +10,7 @@
     <string name="error_no_app">Не найдено приложение для этого действия</string>
     <string name="error_no_data">Данные не получены</string>
     <string name="app_list_title">Приложения</string>
+    <string name="app_list_toolbar_message">Вы нажали на тулбар</string>
 
     <!-- Карточка приложения (из практики) -->
     <string name="app_details_age">Возраст</string>
