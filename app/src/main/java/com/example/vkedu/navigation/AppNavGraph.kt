@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.vkedu.ui.AppListScreen
-import com.example.vkedu.ui.appdetails.AppDetailsScreen
+import com.example.vkedu.presentation.appdetails.AppDetailsScreen
+import com.example.vkedu.presentation.applist.AppListScreen
 
 object Routes {
     const val APP_LIST = "app_list"
